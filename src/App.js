@@ -5,6 +5,11 @@ import GlobalStyles from "./config/GlobalStyles";
 import DaysCompleted from "./Components/DaysCompleted";
 import CheckinComment from "./Components/CheckinComment";
 import Header from "./Components/Header";
+import {
+  Switch,
+  Route,
+  useLocation
+} from "react-router-dom";
 
 const checkins = [
   {
@@ -63,7 +68,7 @@ function App() {
           {" "}
         </DaysCompleted>
        
-       <CheckinComment />
+       <CheckinComment/>
 
       </ThemeProvider>
     </div>
