@@ -1,22 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import DaysCompleted from "./Components/DaysCompleted";
-import CheckinComment from "./Components/CheckinComment";
+import React from '../../node_modules/react';
+import PropTypes from '../../node_modules/prop-types';
+import DaysCompleted from "../Components/DaysCompleted";
+import CheckinComment from "../Components/CheckinComment";
 
 function Dash(props) {
+
+    const {checkins, days} = props;
+
     return (
-        <div>
-            <h1> Dash </h1>
-            <DaysCompleted days={15} checkins={checkins}>
-                {" "}
-            </DaysCompleted>
+        <React.Fragment>
+            <DaysCompleted days={days} checkins={checkins} />
             <CheckinComment />
-        </div>
+        </React.Fragment>
     )
 }
 
 Dash.propTypes = {
-
+    checkins: PropTypes.array.isRequired,
+    days: PropTypes.number.isRequired
 }
 
 export default Dash;

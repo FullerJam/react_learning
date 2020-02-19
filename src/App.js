@@ -1,8 +1,11 @@
 import React from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
-import GlobalStyles from "./config/GlobalStyles";
-
+import GlobalStyles from "./config/globalStyles";
+import Dash from "./Views/Dash";
+import Join from "./Views/Join";
+import Profile from "./Views/Profile";
+import Checkin from "./Views/Checkin";
 import Header from "./Components/Header";
 import {
   Switch,
@@ -64,12 +67,9 @@ function App() {
         <Header />
         <GlobalStyles />
         <Switch>
-          <Route path="/">
-            <Dash checkins={checkins} />
-            {/* <DaysCompleted days={15} checkins={checkins}>
-             {" "}
-            </DaysCompleted>
-            <CheckinComment/> */}
+         
+          <Route exact path="/">
+            <Dash checkins={checkins} days={15} />
           </Route>
           <Route path="/join">
             <Join/>
