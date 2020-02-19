@@ -10,7 +10,7 @@ function Menu(props) {
   const location = useLocation();
 
   useEffect(() => {
-    console.log ("You clicked ${count} times")
+     onClick();
    }, [location.pathname]); 
       
      
