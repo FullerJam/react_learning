@@ -63,13 +63,25 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <GlobalStyles />
-        <Dash />
-        {/* <DaysCompleted days={15} checkins={checkins}>
-          {" "}
-        </DaysCompleted>
-       
-       <CheckinComment/> */}
+        <Switch>
+          <Route path="/">
+            <Dash checkins={checkins} />
+            {/* <DaysCompleted days={15} checkins={checkins}>
+             {" "}
+            </DaysCompleted>
+            <CheckinComment/> */}
+          </Route>
+          <Route path="/join">
+            <Join/>
+          </Route>
+          <Route path="/profile">
+            <Profile/>
+          </Route>
+          <Route path="/checkin">
+            <Checkin/>
+          </Route>
 
+        </Switch>
       </ThemeProvider>
     </div>
   );
