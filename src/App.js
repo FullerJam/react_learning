@@ -2,8 +2,7 @@ import React from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/GlobalStyles";
-import DaysCompleted from "./Components/DaysCompleted";
-import CheckinComment from "./Components/CheckinComment";
+
 import Header from "./Components/Header";
 import {
   Switch,
@@ -64,11 +63,12 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <GlobalStyles />
-        <DaysCompleted days={15} checkins={checkins}>
+        <Dash />
+        {/* <DaysCompleted days={15} checkins={checkins}>
           {" "}
         </DaysCompleted>
        
-       <CheckinComment/>
+       <CheckinComment/> */}
 
       </ThemeProvider>
     </div>
