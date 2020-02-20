@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 import Tile from "./Tile";
 import styled from "styled-components";
 import avatarLarge from "../assets/avatar_large.png";

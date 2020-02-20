@@ -61,8 +61,9 @@ Menu.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-function Header() {
-  const [open, setOpen] = useState(false);  
+function Header(props) {
+  // const [open, setOpen] = useState(false);  
+  const {open, setOpen, handleClick} = props; // imported from app (hoisted state)
 
   const StyledBurgerMenu = styled.div`
     width: 90px;
@@ -111,10 +112,11 @@ function Header() {
     justify-content: space-between;
   `;
 
-  const handleClick = e => {
-    // e.preventDefault();
-    setOpen(!open);
-  };
+  // const handleClick = () => {
+  //    //e.preventDefault();
+  //   setOpen(!open);
+  //   console.log("running");
+  // };
 
   return (
     <div>

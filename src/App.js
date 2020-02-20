@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
@@ -64,13 +64,21 @@ const checkins = [
 
 
 function App() {
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    //e.preventDefault();
+    setOpen(!open);
+    console.log("running");
+  };
+
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Header />
+        <Header open={open} setOpen={setOpen} handleClick={handleClick}/>
         <GlobalStyles />
         <Switch>
-
           <Route exact path="/">
             <Dash checkins={checkins} days={15} />
           </Route>
@@ -93,6 +101,9 @@ function App() {
   );
 }
 
+/**
+ * 404 Error function
+ */
 function Unknown() {
   let location = useLocation();
 
