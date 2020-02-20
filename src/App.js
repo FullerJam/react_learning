@@ -2,11 +2,12 @@ import React from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
-import Dash from "./Views/Dash";
-import Join from "./Views/Join";
-import Profile from "./Views/Profile";
-import Checkin from "./Views/Checkin";
+import Dash from "./views/Dash";
+import Join from "./views/Join";
+import Profile from "./views/Profile";
+import Checkin from "./views/Checkin";
 import Header from "./Components/Header";
+import styled from "styled-components";
 import {
   Switch,
   Route,
@@ -60,6 +61,8 @@ const checkins = [
   { date: "Wed Jan 15 2020 07:17:11 GMT+0000 (Greenwich Mean Time)", score: 20 }
 ];
 
+
+
 function App() {
   return (
     <div>
@@ -67,24 +70,52 @@ function App() {
         <Header />
         <GlobalStyles />
         <Switch>
-         
+
           <Route exact path="/">
             <Dash checkins={checkins} days={15} />
           </Route>
           <Route path="/join">
-            <Join/>
+            <Join />
           </Route>
           <Route path="/profile">
-            <Profile/>
+            <Profile />
           </Route>
           <Route path="/checkin">
-            <Checkin/>
+            <Checkin />
+          </Route>
+          <Route path="*">
+            <Unknown />
           </Route>
 
         </Switch>
       </ThemeProvider>
     </div>
   );
+}
+
+function Unknown() {
+  let location = useLocation();
+
+  const CenteredDiv = styled.div`
+      display: flex;
+      flex-direction:column;
+      align-items: center;
+      justify-content: center;
+      height:70vh;
+      width:100%;    
+  `;
+
+  return (
+    <CenteredDiv>
+      <h1>
+        404 Not found
+      </h1>
+      <h2>
+        localhost:3000{location.pathname}
+      </h2>
+    </CenteredDiv>
+  );
+
 }
 
 export default App;

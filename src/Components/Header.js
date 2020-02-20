@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import avatarLarge from "../assets/avatar_small.png";
@@ -7,16 +7,11 @@ import { faChevronDown, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {Link, useLocation} from "react-router-dom";
 
 function Menu(props) {
+  const {onClick} = props;
   const location = useLocation();
+  // console.log(location.pathname);
 
-  useEffect(() => {
-     onClick();
-   }, [location.pathname]); 
-      
-     
-
-  console.log(location.pathname);
-  const { onClick } = props;
+  useEffect(() => onClick, [location.pathname]); 
 
   const StyledNav = styled.nav`
     ul {
@@ -52,8 +47,10 @@ function Menu(props) {
       <StyledClosedText onClick={onClick}> X </StyledClosedText>
       <StyledNav>
         <ul>
-          <StyledLi active={location.pathname === "/"}> <Link to='/'>Dash</Link> </StyledLi>
-          <StyledLi active={location.pathname === "/profile"}> <Link to='/profile'>Profile</Link> </StyledLi>
+          <StyledLi active={location.pathname === "/"} > <Link to='/'>Dash</Link> </StyledLi>
+          <StyledLi active={location.pathname === "/profile"} > <Link to='/profile'>Profile</Link> </StyledLi>
+          <StyledLi active={location.pathname === "/join"} > <Link to='/join'>Join</Link> </StyledLi>
+          <StyledLi active={location.pathname === "/checkin"} > <Link to='/checkin'>Checkin</Link> </StyledLi>
         </ul>
       </StyledNav>
     </div>
@@ -65,7 +62,7 @@ Menu.propTypes = {
 };
 
 function Header() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);  
 
   const StyledBurgerMenu = styled.div`
     width: 90px;
@@ -115,7 +112,7 @@ function Header() {
   `;
 
   const handleClick = e => {
-    e.preventDefault();
+    // e.preventDefault();
     setOpen(!open);
   };
 
