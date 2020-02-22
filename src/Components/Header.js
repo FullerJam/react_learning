@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import avatarLarge from "../assets/avatar_small.png";
@@ -44,7 +44,7 @@ function Menu(props) {
 
   return (
     <div>
-      <StyledClosedText onClick={onClick}> X </StyledClosedText>
+      <StyledClosedText onClick={onClick}> ⛌ </StyledClosedText>
       <StyledNav>
         <ul>
           <StyledLi active={location.pathname === "/"} > <Link to='/'>Dash</Link> </StyledLi>
@@ -63,7 +63,7 @@ Menu.propTypes = {
 
 function Header(props) {
   // const [open, setOpen] = useState(false);  
-  const {open, setOpen, handleClick} = props; // imported from app (hoisted state)
+  const {open, handleClick} = props; // imported from app (hoisted state)
 
   const StyledBurgerMenu = styled.div`
     width: 90px;
@@ -121,7 +121,7 @@ function Header(props) {
   return (
     <div>
       <StyledMenuWrapper open={open}>
-        <Menu onClick={handleClick} />
+        <Menu onClick={handleClick} /> {/*function hoisted to app.js*/}
       </StyledMenuWrapper>
 
       <StyledWrapper>
@@ -133,7 +133,7 @@ function Header(props) {
         <StyledUserAvatar>
           <FontAwesomeIcon style={{ fontSize: "16px" }} icon={faChevronDown} />
           <h6> Joe Appleton</h6>
-          <img src={avatarLarge} />
+          <img src={avatarLarge} alt="avatar"/>
         </StyledUserAvatar>
       </StyledWrapper>
     </div>

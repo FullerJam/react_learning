@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
@@ -63,39 +63,67 @@ const checkins = [
 
 
 
+
 function App() {
 
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
+  // useEffect(()=> hideHeader, [location.pathname]); 
+
+  /**
+   * 
+   */
   const handleClick = () => {
     //e.preventDefault();
     setOpen(!open);
-    console.log("running");
   };
+
+
+  /**
+   *hides menu when wrapped div is clicked only if open already 
+   */
+  const handleWrapperClick = () => {
+    if(open === true){ 
+      setOpen(!open);
+    }
+  }
+
+  /**
+   * hides header based on location.pathname
+   */
+  let header; 
+  if(location.pathname === "/join"){
+    header = ""
+  } else {
+    header = <Header open={open} setOpen={setOpen} handleClick={handleClick} />;
+  }
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <Header open={open} setOpen={setOpen} handleClick={handleClick}/>
-        <GlobalStyles />
-        <Switch>
-          <Route exact path="/">
-            <Dash checkins={checkins} days={15} />
-          </Route>
-          <Route path="/join">
-            <Join />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/checkin">
-            <Checkin />
-          </Route>
-          <Route path="*">
-            <Unknown />
-          </Route>
+        {header}
+        <div onClick={handleWrapperClick} style={{ width: '100vw', height: '100vh' }}>
+          <GlobalStyles />
+          <Switch>
+            <Route exact path="/">
+              <Dash checkins={checkins} days={15} />
+            </Route>
+            <Route path="/join">
+              <Join />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/checkin">
+              <Checkin />
+            </Route>
+            <Route path="*">
+              <Unknown />
+            </Route>
 
-        </Switch>
+          </Switch>
+        </div>
       </ThemeProvider>
     </div>
   );
