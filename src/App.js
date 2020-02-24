@@ -84,6 +84,8 @@ function App() {
    *hides menu when wrapped div is clicked only if open already 
    */
   const handleWrapperClick = () => {
+
+    //open:setOpen(!open):open
     if(open === true){ 
       setOpen(!open);
     }
