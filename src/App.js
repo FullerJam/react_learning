@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
@@ -103,7 +103,7 @@ function App() {
     <div>
       <ThemeProvider theme={theme}>
         {header}
-        <div onClick={handleWrapperClick} style={{ width: '100vw', height: '100vh' }}>
+        <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
           <GlobalStyles />
           <Switch>
             <Route exact path="/">

@@ -1,9 +1,9 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import avatarLarge from "../assets/avatar_small.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import {Link, useLocation} from "react-router-dom";
 
 function Menu(props) {
@@ -37,7 +37,8 @@ function Menu(props) {
   const StyledClosedText = styled.p`
     text-align: right;
     padding-right: 3%;
-    margin-bottom: 15%;
+    margin-top:2%;
+    margin-bottom: 5%;
     font-size: 18px;
     cursor: pointer;
   `;

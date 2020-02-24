@@ -92,7 +92,7 @@ function CheckinComment(props) {
           <img
             src={avatarLarge}
             style={{ marginBottom: "-20px" }}
-            alt="avatar image"
+            alt="avatar lg"
           />
           <LikeButton></LikeButton>
         </StyledPhotoArea>
@@ -119,7 +119,7 @@ function CheckinComment(props) {
         <img
           src={avatarSmall}
           style={{ marginBottom: "-20px" }}
-          alt="avatar image"
+          alt="avatar"
         />
 
         <CommentArea>
@@ -135,7 +135,7 @@ function CheckinComment(props) {
         <img
           src={avatarSmall}
           style={{ marginBottom: "-20px" }}
-          alt="avatar image"
+          alt="avatar sm"
         />
 
         <textarea rows="4"> 
