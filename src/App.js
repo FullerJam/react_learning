@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
-import Dash from "./views/Dash";
-import Join from "./views/Join";
-import Profile from "./views/Profile";
-import Checkin from "./views/Checkin";
+import Dash from "./Views/Dash";
+import Join from "./Views/Join";
+import Profile from "./Views/Profile";
+import Checkin from "./Views/Checkin";
 import Header from "./Components/Header";
 import styled from "styled-components";
 import {
@@ -61,7 +61,7 @@ const checkins = [
   { date: "Wed Jan 15 2020 07:17:11 GMT+0000 (Greenwich Mean Time)", score: 20 }
 ];
 
-
+//U:\src\react_learning\src\views
 
 
 function App() {
@@ -94,17 +94,17 @@ function App() {
   /**
    * hides header based on location.pathname
    */
-  let header; 
-  if(location.pathname === "/join"){
-    header = ""
-  } else {
-    header = <Header open={open} setOpen={setOpen} handleClick={handleClick} />;
-  }
+  // let header; 
+  // if(location.pathname === "/join"){
+  //   header = ""
+  // } else {
+  //   header = <Header open={open} setOpen={setOpen} handleClick={handleClick} />;
+  // }
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {header}
+        {location.pathname === "/join" ? "" : <Header open={open} setOpen={setOpen} handleClick={handleClick} />}
         <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
           <GlobalStyles />
           <Switch>

@@ -1,4 +1,4 @@
-import React from '../../node_modules/react'
+import React from 'react'
 //import PropTypes from '../../node_modules/prop-types'
 
 function Profile(props) {
