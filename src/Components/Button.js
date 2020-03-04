@@ -17,6 +17,8 @@ function Button(props) {
     cursor: pointer;
     width: 100%;
     margin-top: 6%;
+    max-width:300px;
+    margin: 0 auto;
   `;
 
   return(  
