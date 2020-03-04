@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import drinkIcon from "../assets/drink-icon.svg";
 import foodIcon from "../assets/food-icon.svg";
 import Button from "../Components/Button";
