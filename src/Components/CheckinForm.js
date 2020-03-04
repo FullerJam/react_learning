@@ -5,7 +5,7 @@ import foodIcon from "../assets/food-icon.svg";
 import Button from "../Components/Button";
 import styled from "styled-components";
 // import ErrorLabel from "../Components/ErrorLabel"
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const StyledForm = styled.form`
@@ -89,11 +89,11 @@ function CheckinForm(props) {
     vegPortions: yup.string().required("required"),
     water: yup.string().required("required"),
     diet: yup.string().required("required"),
-    createdOn: yup.date().default(function () {
-      return new Date()
-    })
+    // createdOn: yup.date().default(function () {
+    //   return new Date()
+    // })
   })
-  const { register, handleSubmit, errors } = useForm({ validationSchema: checkinSchema })
+  const { register, handleSubmit, errors } = useForm({  })
 
   //function called by handlesubmit()
   const onSubmit = data => { console.log(data) }
@@ -129,7 +129,7 @@ function CheckinForm(props) {
           </span>
       </StyledCheckinP>
 
-      <StyledLabel>Was Your Diet Perfect (10)?</StyledLabel>
+      <StyledLabel>Was your diet perfect (10)?</StyledLabel>
       <StyledCheckinP>
         <span>
           <input type="radio" value="10" ref={register} name="diet" /> Yes
@@ -145,7 +145,8 @@ function CheckinForm(props) {
 
           <StyledIcon src={drinkIcon} />
           <StyledSelect>
-            <option value="1"> 0 </option>
+            <option value="0"> 0 </option>
+            <option value="1"> 1 </option>
             <option value="2"> 2 </option>
             <option value="3"> 3 </option>
             <option value="4"> 4 </option>
