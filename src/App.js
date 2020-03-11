@@ -13,6 +13,7 @@ import {
   Route,
   useLocation
 } from "react-router-dom";
+import useAuth from "./services/firebase/useAuth";
 
 const checkins = [
   {
@@ -86,7 +87,7 @@ function App() {
   const handleWrapperClick = () => {
 
     //open:setOpen(!open):open
-    if(open === true){ 
+    if (open === true) {
       setOpen(!open);
     }
   }
