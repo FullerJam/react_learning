@@ -153,9 +153,6 @@ function CheckinForm(props) {
   }
 
 
-
-
-
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       {/* {JSON.stringify(diet)} */}

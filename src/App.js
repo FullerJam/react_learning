@@ -6,14 +6,19 @@ import Dash from "./Views/Dash";
 import Join from "./Views/Join";
 import Profile from "./Views/Profile";
 import Checkin from "./Views/Checkin";
+import Login from "./Views/Login";
 import Header from "./Components/Header";
 import styled from "styled-components";
 import {
   Switch,
   Route,
-  useLocation
+  useLocation,
+  Redirect
 } from "react-router-dom";
 import useAuth from "./services/firebase/useAuth";
+import firebase from "firebase/app";   // the firebase core lib
+import 'firebase/auth'; // specific products
+import firebaseConfig from "./config/firebase";  // the firebase config 
 
 const checkins = [
   {
@@ -62,10 +67,37 @@ const checkins = [
   { date: "Wed Jan 15 2020 07:17:11 GMT+0000 (Greenwich Mean Time)", score: 20 }
 ];
 
-//U:\src\react_learning\src\views
+
+
+function ProtectedRoute({ authenticated, children, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        authenticated ? (
+          children
+        ) : (
+            <Redirect
+              to={{
+                pathname: "/join",
+                state: { from: location }
+              }}
+            />
+          )
+      }
+    />
+  );
+}
 
 
 function App() {
+
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+
+  const { isAuthenticated , signUpWithEmail } = useAuth(firebase.auth()); // pass in firebase authentication library function 
 
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -109,18 +141,27 @@ function App() {
         <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
           <GlobalStyles />
           <Switch>
-            <Route exact path="/">
-              <Dash checkins={checkins} days={15} />
-            </Route>
+            <ProtectedRoute authenticated={isAuthenticated} exact path="/">
+              <Route exact path="/">
+                <Dash checkins={checkins} days={15} />
+              </Route>
+            </ProtectedRoute>
             <Route path="/join">
-              <Join />
+              <Join signUpWithEmail={signUpWithEmail}/>
             </Route>
-            <Route path="/profile">
-              <Profile />
+            <Route path="/login">
+              <Login/>
             </Route>
-            <Route path="/checkin">
-              <Checkin />
-            </Route>
+            <ProtectedRoute authenticated={isAuthenticated} exact path="/">
+              <Route path="/profile">
+                <Profile />
+              </Route>
+            </ProtectedRoute>
+            <ProtectedRoute authenticated={isAuthenticated} exact path="/">
+              <Route path="/checkin">
+                <Checkin />
+              </Route>
+            </ProtectedRoute>
             <Route path="*">
               <Unknown />
             </Route>

@@ -6,25 +6,7 @@ import { SocialIcon } from "react-social-icons";
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup';
 
-
-function LoginForm(props) {
-    console.log(useForm);
-
-    const loginSchema = yup.object().shape({
-        email: yup.string().required('Email is required').email('Email is not valid'),
-        password: yup.string().required('Password is required').min(8, 'Password must be a minimum of 8 chars'),
-        createdOn: yup.date().default(function () {
-            return new Date();
-        }),
-    });
-    const { register, handleSubmit, errors } = useForm({ validationSchema: loginSchema });
-    const onSubmit = data => { console.log(data) }
-
-
-    const { buttonText } = props;
-    const [displayEmail, setDisplayEmail] = useState(false);
-
-    const StyledHeading = styled.h3`
+const StyledHeading = styled.h3`
     text-align: center;
     margin-top: 2%;
     color: ${({ theme }) => theme.colors.purple};
@@ -37,10 +19,28 @@ function LoginForm(props) {
     margin:0 auto;
   `;
 
+/**
+ * 
+ * @param {*} props 
+ */
+function LoginForm(props) {
+
+    const { buttonText, onSubmit } = props;
+    const [displayEmail, setDisplayEmail] = useState(false);
+
+    const loginSchema = yup.object().shape({
+        email: yup.string().required('Email is required').email('Email is not valid'),
+        password: yup.string().required('Password is required').min(8, 'Password must be a minimum of 8 chars')
+    });
+    const { register, handleSubmit, errors } = useForm({ validationSchema: loginSchema });
+
+
     const handleClick = (e) => {
         e.preventDefault();
         setDisplayEmail(!displayEmail);
     }
+
+    const handleInnerSubmit = data => {onSubmit(data)}
 
     return (
         <React.Fragment>
@@ -55,22 +55,20 @@ function LoginForm(props) {
             {!displayEmail && (<Button text="Email" onClick={handleClick} />)}
 
             {displayEmail && (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(handleInnerSubmit)}>
                     <p>
                         <label> Email </label>
                     </p>
                     <p>
                         <input type="text" name="email" /*ref={register({ required: true })}*/ />
-                        <p>{errors.email && errors.email.message}</p>
-                        {/* <p>{errors.email && 'Email is required'} </p> */}
+                        {errors.email && errors.email.message}
                     </p>
                     <p>
                         <label> Password </label>
                     </p>
                     <p>
                         <input type="password" name="password" /*ref={register({ required: true, minLength: 6 })}*/ />
-                        <p>{errors.password && errors.password.message}</p>
-                        {/* <p>{errors.password && 'Password is required (min char length 6)'}</p> */}
+                        {errors.password && errors.password.message}
                     </p>
                     <Button text={buttonText} />
                 </form>
@@ -84,7 +82,7 @@ function LoginForm(props) {
 }
 
 LoginForm.propTypes = {
-    buttonText: PropTypes.string
+    buttonText: PropTypes.string,
 };
 
 LoginForm.defaultProps = {

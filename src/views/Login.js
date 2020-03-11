@@ -3,15 +3,12 @@ import styled from "styled-components";
 import Tile from "../Components/Tile";
 import { Link } from "react-router-dom";
 import Form from "../Components/LoginForm";
-import PropTypes from "prop-types";
 
 
-function Join(props) {
 
-  const {SignUpWithEmail} = props;
-  const handleSubmit = async (data) => {
-    console.log(data);
-  }
+
+function Login() {
+
 
   const StyledWrapper = styled.div`
     display: flex;
@@ -45,17 +42,13 @@ function Join(props) {
   return (
     <StyledWrapper>
       <StyledTile>
-        <StyledHeading>Get Started</StyledHeading>
-        <StyledHeading>Join With </StyledHeading>
-        <Form onSubmit={handleSubmit}/>
-        <StyledLink to="/login"> Already a member - Login </StyledLink>
+  
+        <StyledHeading>Login With </StyledHeading>
+        <Form  buttonText="LOGIN"/>
+        <StyledLink to="/join"> Not a member - Join </StyledLink>
       </StyledTile>
     </StyledWrapper>
   );
 }
 
-Join.propTypes = {
-  SignUpWithEmail: PropTypes.func.isRequired,
-};
-
-export default Join;
+export default Login;
