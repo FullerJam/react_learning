@@ -5,14 +5,6 @@ import { Link } from "react-router-dom";
 import Form from "../Components/LoginForm";
 import PropTypes from "prop-types";
 
-
-function Join(props) {
-
-  const {SignUpWithEmail} = props;
-  const handleSubmit = async (data) => {
-    console.log(data);
-  }
-
   const StyledWrapper = styled.div`
     display: flex;
     justify-content: center;
@@ -41,13 +33,20 @@ function Join(props) {
     text-align: center;
   `;
 
+function Join(props) {
+  const {signUpWithEmail} = props;
+  const handleEmailSubmit = async (data) => {
+    console.log(data);
+  }
+
+
 
   return (
     <StyledWrapper>
       <StyledTile>
         <StyledHeading>Get Started</StyledHeading>
         <StyledHeading>Join With </StyledHeading>
-        <Form onSubmit={handleSubmit}/>
+        <Form onSubmit={handleEmailSubmit}/>
         <StyledLink to="/login"> Already a member - Login </StyledLink>
       </StyledTile>
     </StyledWrapper>
@@ -55,7 +54,7 @@ function Join(props) {
 }
 
 Join.propTypes = {
-  SignUpWithEmail: PropTypes.func.isRequired,
+  signUpWithEmail: PropTypes.func.isRequired,
 };
 
 export default Join;

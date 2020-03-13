@@ -29,13 +29,13 @@ function LoginForm(props) {
     const [displayEmail, setDisplayEmail] = useState(false);
 
     const loginSchema = yup.object().shape({
-        email: yup.string().required('Email is required').email('Email is not valid'),
+        email: yup.string().email('Email is not valid').required('Email is required'),
         password: yup.string().required('Password is required').min(8, 'Password must be a minimum of 8 chars')
     });
-    const { register, handleSubmit, errors } = useForm({ validationSchema: loginSchema });
+    const { register, handleSubmit, errors } = useForm({validationSchema:loginSchema});
 
 
-    const handleClick = (e) => {
+    const handleClick = e => {
         e.preventDefault();
         setDisplayEmail(!displayEmail);
     }
@@ -60,14 +60,14 @@ function LoginForm(props) {
                         <label> Email </label>
                     </p>
                     <p>
-                        <input type="text" name="email" /*ref={register({ required: true })}*/ />
+                        <input type="text" name="email" ref={register}/>
                         {errors.email && errors.email.message}
                     </p>
                     <p>
                         <label> Password </label>
                     </p>
                     <p>
-                        <input type="password" name="password" /*ref={register({ required: true, minLength: 6 })}*/ />
+                        <input type="password" name="password" ref={register}/>
                         {errors.password && errors.password.message}
                     </p>
                     <Button text={buttonText} />
@@ -83,6 +83,7 @@ function LoginForm(props) {
 
 LoginForm.propTypes = {
     buttonText: PropTypes.string,
+    onSubmit:PropTypes.func.isRequired
 };
 
 LoginForm.defaultProps = {

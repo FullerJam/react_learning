@@ -8,7 +8,6 @@ import Profile from "./Views/Profile";
 import Checkin from "./Views/Checkin";
 import Login from "./Views/Login";
 import Header from "./Components/Header";
-import styled from "styled-components";
 import {
   Switch,
   Route,
@@ -73,12 +72,7 @@ function ProtectedRoute({ authenticated, children, ...rest }) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        authenticated ? (
-          children
-        ) : (
-            <Redirect
-              to={{
+      render={({ location }) =>authenticated ? (children) : (<Redirect to={{
                 pathname: "/join",
                 state: { from: location }
               }}
@@ -137,13 +131,13 @@ function App() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {location.pathname === "/join" ? "" : <Header open={open} setOpen={setOpen} handleClick={handleClick} />}
+        {location.pathname === "/join" || "/" ? "" : <Header open={open} setOpen={setOpen} handleClick={handleClick} />}
         <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
           <GlobalStyles />
           <Switch>
             <ProtectedRoute authenticated={isAuthenticated} exact path="/">
-              <Route exact path="/">
-                <Dash checkins={checkins} days={15} />
+              <Route>
+                <Dash checkins={checkins} days={15}/>
               </Route>
             </ProtectedRoute>
             <Route path="/join">
@@ -152,19 +146,19 @@ function App() {
             <Route path="/login">
               <Login/>
             </Route>
-            <ProtectedRoute authenticated={isAuthenticated} exact path="/">
-              <Route path="/profile">
+            <ProtectedRoute authenticated={isAuthenticated} path="/profile">
+              <Route >
                 <Profile />
               </Route>
             </ProtectedRoute>
-            <ProtectedRoute authenticated={isAuthenticated} exact path="/">
-              <Route path="/checkin">
+            <ProtectedRoute authenticated={isAuthenticated} path="/checkin">
+              <Route>
                 <Checkin />
               </Route>
             </ProtectedRoute>
-            <Route path="*">
+            {/* <Route path="*">
               <Unknown />
-            </Route>
+            </Route> */}
 
           </Switch>
         </div>
@@ -174,31 +168,31 @@ function App() {
 }
 
 /**
- * 404 Error function
+ * 404 Error function (stopped working when using protected routes, need to find alternate method)
  */
-function Unknown() {
-  let location = useLocation();
+// function Unknown() {
+//   let location = useLocation();
 
-  const CenteredDiv = styled.div`
-      display: flex;
-      flex-direction:column;
-      align-items: center;
-      justify-content: center;
-      height:70vh;
-      width:100%;    
-  `;
+//   const CenteredDiv = styled.div`
+//       display: flex;
+//       flex-direction:column;
+//       align-items: center;
+//       justify-content: center;
+//       height:70vh;
+//       width:100%;    
+//   `;
 
-  return (
-    <CenteredDiv>
-      <h1>
-        404 Not found
-      </h1>
-      <h2>
-        localhost:3000{location.pathname}
-      </h2>
-    </CenteredDiv>
-  );
+//   return (
+//     <CenteredDiv>
+//       <h1>
+//         404 Not found
+//       </h1>
+//       <h2>
+//         localhost:3000{location.pathname}
+//       </h2>
+//     </CenteredDiv>
+//   );
 
-}
+// }
 
 export default App;
