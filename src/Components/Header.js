@@ -1,19 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react"
+// import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import avatarLarge from "../assets/avatar_small.png";
+import avatarPlaceholder from "../assets/avatar_placeholder.png";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import {Link, useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-function Menu(props) {
-  const {onClick} = props;
-  const location = useLocation();
-  // console.log(location.pathname);
-
-  useEffect(() => onClick, [location.pathname]); 
-
-  const StyledNav = styled.nav`
+const StyledNav = styled.nav`
     ul {
       display: flex;
       flex-direction: column;
@@ -21,7 +16,7 @@ function Menu(props) {
     }
   `;
 
-  const StyledLi = styled.li`
+const StyledLi = styled.li`
     margin-bottom: 10%;
     cursor: pointer;
     width: 100%;
@@ -31,10 +26,10 @@ function Menu(props) {
     justify-content: center;
     align-items: center;
     background: ${({ theme, active }) =>
-      active ? theme.colors.darkShade[25] : ""};
+    active ? theme.colors.darkShade[25] : ""};
   `;
 
-  const StyledClosedText = styled.p`
+const StyledClosedText = styled.p`
     text-align: right;
     padding-right: 3%;
     margin-top:2%;
@@ -42,6 +37,10 @@ function Menu(props) {
     font-size: 18px;
     cursor: pointer;
   `;
+
+function Menu(props) {
+  const { onClick } = props;
+  const location = useLocation();
 
   return (
     <div>
@@ -62,11 +61,8 @@ Menu.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-function Header(props) {
-  // const [open, setOpen] = useState(false);  
-  const {open, handleClick} = props; // imported from app (hoisted state)
 
-  const StyledBurgerMenu = styled.div`
+const StyledBurgerMenu = styled.div`
     width: 90px;
     cursor: pointer;
     display: flex;
@@ -80,7 +76,7 @@ function Header(props) {
     }
   `;
 
-  const StyledUserAvatar = styled.div`
+const StyledUserAvatar = styled.div`
     color: ${({ theme }) => theme.colors.darkShade[50]};
     display: flex;
     align-items: center;
@@ -89,7 +85,7 @@ function Header(props) {
     }
   `;
 
-  const StyledMenuWrapper = styled.div`
+const StyledMenuWrapper = styled.div`
     transition: all 1s ease-in-out;
     transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
     height: 100vh;
@@ -101,7 +97,7 @@ function Header(props) {
     left: 0;
   `;
 
-  const StyledWrapper = styled.div`
+const StyledWrapper = styled.div`
     width: 100%;
     background: linear-gradient(
       180deg,
@@ -113,11 +109,20 @@ function Header(props) {
     justify-content: space-between;
   `;
 
-  // const handleClick = () => {
-  //    //e.preventDefault();
-  //   setOpen(!open);
-  //   console.log("running");
-  // };
+
+function Header(props) {
+  // const [open, setOpen] = useState(false);  
+  const { open, onClick, user, signOut } = props; // imported from app (hoisted state)
+
+
+  const handleClick = e => {
+    e.preventDefault()
+    onClick(e)
+  }
+
+  const handleSignOutClick = () => {
+    signOut()
+  }
 
   return (
     <div>
@@ -133,12 +138,20 @@ function Header(props) {
         </StyledBurgerMenu>
         <StyledUserAvatar>
           <FontAwesomeIcon style={{ fontSize: "16px" }} icon={faChevronDown} />
-          <h6> Joe Appleton</h6>
-          <img src={avatarLarge} alt="avatar"/>
+          <h6> {user.email}  <span style={{ textDecoration: "underline", cursor: "pointer" }} onClick={handleSignOutClick}> (logout) </span></h6>
+          <img src={user.photoURL || avatarPlaceholder} alt="avatar" />
         </StyledUserAvatar>
       </StyledWrapper>
     </div>
   );
 }
+
+Header.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+  signOut: PropTypes.func.isRequired
+
+};
 
 export default Header;

@@ -74,11 +74,14 @@ const checkins = [
 let initAttemptedRoute = "/"
 
 function ProtectedRoute({ authenticated, children, ...rest }) {
+
+  initAttemptedRoute = useLocation().pathname
+
   return (
     <Route
       {...rest}
       render={({ location }) => authenticated ? (children) : (<Redirect to={{
-        pathname: "/join",
+        pathname: "/login",
         state: { from: location }
       }}
       />
@@ -88,7 +91,7 @@ function ProtectedRoute({ authenticated, children, ...rest }) {
   );
 }
 
-function RedirectToSlash({ authenticated, children, ...rest }) {
+function RedirectToDash({ authenticated, children, ...rest }) {
   return (
     <Route
       {...rest}
@@ -115,7 +118,7 @@ function App() {
     firebase.initializeApp(firebaseConfig);
   }
 
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const {
     isAuthenticated,
@@ -125,7 +128,7 @@ function App() {
     signOut,
     user,
     loading
-  } = useAuth(firebase.auth()); // pass in firebase authentication library function 
+  } = useAuth(firebase.auth); // pass in firebase authentication library
 
   const location = useLocation();
 
@@ -136,7 +139,7 @@ function App() {
    */
   const handleClick = () => {
     //e.preventDefault();
-    setOpen(!open);
+    setMenuOpen(!menuOpen);
   };
 
 
@@ -144,9 +147,8 @@ function App() {
    *hides menu when wrapped div is clicked only if open already 
    */
   const handleWrapperClick = () => {
-    //open:setOpen(!open):open
-    if (open === true) {
-      setOpen(!open);
+    if (menuOpen === true) {
+      setMenuOpen(!menuOpen);
     }
   }
 
@@ -157,7 +159,7 @@ function App() {
   // if(location.pathname === "/join"){
   //   header = ""
   // } else {
-  //   header = <Header open={open} setOpen={setOpen} handleClick={handleClick} />;
+  //   header = <Header menuOpen={open} setMenuOpen={setMenuOpen} handleClick={handleClick} />;
   // }
 
   if (loading) {
@@ -167,31 +169,34 @@ function App() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {location.pathname === "/join" || "/login" ? "" : <Header open={open} setOpen={setOpen} signOut={signOut} user={user} handleClick={handleClick} />}
+        {location.pathname === "/join" || "/login" ? "" : <Header open={menuOpen} signOut={signOut} user={user} onClick={handleClick} />}
         <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
-          <GlobalStyles />
+          <GlobalStyles/>
           <Switch>
             <ProtectedRoute authenticated={isAuthenticated} exact path="/">
                 <Dash checkins={checkins} days={15}/>
             </ProtectedRoute>
 
             {/* unprotected routes */}
-            <RedirectToSlash authenticated={isAuthenticated} path="/join">
+            <RedirectToDash authenticated={isAuthenticated} path="/join">
               <Join signInWithProvider={signInWithProvider} signUpWithEmail={signUpWithEmail} />
-            </RedirectToSlash>
-            <RedirectToSlash authenticated={isAuthenticated} path="/login">
+            </RedirectToDash>
+
+            <RedirectToDash authenticated={isAuthenticated} path="/login">
               <Login signInWithProvider={signInWithProvider} signInEmailUser={signInEmailUser} />
-            </RedirectToSlash>
+            </RedirectToDash>
+            {/* unprotected routes end */}
 
             <ProtectedRoute authenticated={isAuthenticated} path="/profile">
                 <Profile />
             </ProtectedRoute>
+
             <ProtectedRoute authenticated={isAuthenticated} path="/checkin">
                 <Checkin />
             </ProtectedRoute>
             {/* <Route path="*">
               <Unknown />
-            </Route> */}
+            </Route> */} {/*404 wasnt working so commented out*/}
           </Switch>
         </div>
       </ThemeProvider>

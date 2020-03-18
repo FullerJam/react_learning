@@ -73,6 +73,7 @@ function LoginForm(props) {
                         {errors.password && errors.password.message}
                     </p>
                     <Button text={buttonText} />
+                    {serverErrorMessage}
                 </form>
             )}
 

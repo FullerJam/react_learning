@@ -84,7 +84,6 @@ const StyledHeading = styled.h4`
 `;
 
 
-
 function CheckinForm(props) {
   const [total, setTotal] = useState(0);
 

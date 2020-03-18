@@ -9,7 +9,7 @@ function useAuth(fbAuth) {
    const googleProvider = new fbAuth.GoogleAuthProvider();
    const facebookProvider = new fbAuth.FacebookAuthProvider();
 
-   fbAuth.onAuthStateChanged(user => {
+   fbAuth().onAuthStateChanged(user => {
          setLoading(false)
          if(user){
          //console.log(user)
