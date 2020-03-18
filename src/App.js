@@ -168,13 +168,15 @@ function App() {
 
   return (
     <div>
+      {console.log(location.pathname)}
       <ThemeProvider theme={theme}>
         {location.pathname === "/join" || "/login" ? "" : <Header open={menuOpen} signOut={signOut} user={user} onClick={handleClick} />}
         <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
-          <GlobalStyles/>
+          
+          <GlobalStyles />
           <Switch>
             <ProtectedRoute authenticated={isAuthenticated} exact path="/">
-                <Dash checkins={checkins} days={15}/>
+              <Dash checkins={checkins} days={15} />
             </ProtectedRoute>
 
             {/* unprotected routes */}
@@ -188,11 +190,11 @@ function App() {
             {/* unprotected routes end */}
 
             <ProtectedRoute authenticated={isAuthenticated} path="/profile">
-                <Profile />
+              <Profile />
             </ProtectedRoute>
 
             <ProtectedRoute authenticated={isAuthenticated} path="/checkin">
-                <Checkin />
+              <Checkin />
             </ProtectedRoute>
             {/* <Route path="*">
               <Unknown />
