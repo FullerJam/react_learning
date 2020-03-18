@@ -10,7 +10,6 @@ function useAuth(fbAuth) {
    const facebookProvider = new fbAuth.FacebookAuthProvider();
 
    fbAuth.onAuthStateChanged(user => {
-      if (user) {
          setLoading(false)
          if(user){
          //console.log(user)
@@ -19,7 +18,6 @@ function useAuth(fbAuth) {
          console.log(isAuthenticated)
          return
          }
-      }
       setIsAuthenticated(false)
    });
 
