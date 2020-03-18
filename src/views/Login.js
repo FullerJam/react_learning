@@ -1,24 +1,19 @@
-import React from "react";
-import styled from "styled-components";
-import Tile from "../Components/Tile";
-import { Link } from "react-router-dom";
-import Form from "../Components/LoginForm";
+import React, { useState } from "react"
+import PropTypes from "prop-types"
+import styled from "styled-components"
+import Tile from "../Components/Tile"
+import { Link } from "react-router-dom"
+import Form from "../Components/LoginForm"
 
-
-
-
-function Login() {
-
-
-  const StyledWrapper = styled.div`
+const StyledWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     min-width: 100vw;
-  `;
+  `
 
-  const StyledTile = styled(Tile)`
+const StyledTile = styled(Tile)`
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     justify-content: center;
@@ -27,28 +22,54 @@ function Login() {
     @media (min-width: 600px) {
       width: 30%;
     }
-  `;
+  `
 
-  const StyledHeading = styled.h2`
+const StyledHeading = styled.h2`
     text-align: center;
     margin-top: 2%;
     color: ${({ theme }) => theme.colors.purple};
-  `;
-  const StyledLink = styled(Link)`
+  `
+const StyledLink = styled(Link)`
     text-align: center;
-  `;
+  `
+
+function Login(props) {
+
+  const { signInEmailUser, signInWithProvider } = props
+  const [serverErrorMessage, setServerErrorMessage] = useState('')
+
+  const handleEmailSubmit = async data => {
+    const { email, password } = data
+
+    try {
+      const user = await signInEmailUser(email, password)
+      console.log(user)
+    } catch (e) {
+      debugger;
+      setServerErrorMessage(e.message)
+    }
+  }
+
+  const handleSocialLogin = provider => {
+    signInWithProvider(provider);
+  }
+
 
 
   return (
     <StyledWrapper>
       <StyledTile>
-  
         <StyledHeading>Login With </StyledHeading>
-        <Form  buttonText="LOGIN"/>
+        <Form onSocialLogin={handleSocialLogin} onSubmit={handleEmailSubmit} serverErrorMessage={serverErrorMessage} buttonText="LOGIN" />
         <StyledLink to="/join"> Not a member - Join </StyledLink>
       </StyledTile>
     </StyledWrapper>
   );
+}
+
+Login.propTypes = {
+  signInEmailUser: PropTypes.func.isRequired,
+  signInWithProvider: PropTypes.func.isRequired
 }
 
 export default Login;

@@ -2,18 +2,23 @@ import React, { useState } from "react";
 import theme from "./config/theme.js";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./config/globalStyles";
+
 import Dash from "./Views/Dash";
 import Join from "./Views/Join";
 import Profile from "./Views/Profile";
 import Checkin from "./Views/Checkin";
 import Login from "./Views/Login";
+
 import Header from "./Components/Header";
+import Loader from "./Components/Loader";
+
 import {
   Switch,
   Route,
   useLocation,
   Redirect
 } from "react-router-dom";
+
 import useAuth from "./services/firebase/useAuth";
 import firebase from "firebase/app";   // the firebase core lib
 import 'firebase/auth'; // specific products
@@ -66,14 +71,34 @@ const checkins = [
   { date: "Wed Jan 15 2020 07:17:11 GMT+0000 (Greenwich Mean Time)", score: 20 }
 ];
 
-
+let initAttemptedRoute = "/"
 
 function ProtectedRoute({ authenticated, children, ...rest }) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>authenticated ? (children) : (<Redirect to={{
-                pathname: "/join",
+      render={({ location }) => authenticated ? (children) : (<Redirect to={{
+        pathname: "/join",
+        state: { from: location }
+      }}
+      />
+      )
+      }
+    />
+  );
+}
+
+function RedirectToSlash({ authenticated, children, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        !authenticated ? (
+          children
+        ) : (
+            <Redirect
+              to={{
+                pathname: initAttemptedRoute,
                 state: { from: location }
               }}
             />
@@ -90,10 +115,18 @@ function App() {
     firebase.initializeApp(firebaseConfig);
   }
 
-
-  const { isAuthenticated , signUpWithEmail } = useAuth(firebase.auth()); // pass in firebase authentication library function 
-
   const [open, setOpen] = useState(false);
+
+  const {
+    isAuthenticated,
+    signUpWithEmail,
+    signInEmailUser,
+    signInWithProvider,
+    signOut,
+    user,
+    loading
+  } = useAuth(firebase.auth()); // pass in firebase authentication library function 
+
   const location = useLocation();
 
   // useEffect(()=> hideHeader, [location.pathname]); 
@@ -111,7 +144,6 @@ function App() {
    *hides menu when wrapped div is clicked only if open already 
    */
   const handleWrapperClick = () => {
-
     //open:setOpen(!open):open
     if (open === true) {
       setOpen(!open);
@@ -119,7 +151,7 @@ function App() {
   }
 
   /**
-   * hides header based on location.pathname
+   * hides header based on location.pathname : old solution
    */
   // let header; 
   // if(location.pathname === "/join"){
@@ -128,38 +160,38 @@ function App() {
   //   header = <Header open={open} setOpen={setOpen} handleClick={handleClick} />;
   // }
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div>
       <ThemeProvider theme={theme}>
-        {location.pathname === "/join" || "/" ? "" : <Header open={open} setOpen={setOpen} handleClick={handleClick} />}
+        {location.pathname === "/join" || "/login" ? "" : <Header open={open} setOpen={setOpen} signOut={signOut} user={user} handleClick={handleClick} />}
         <div onClick={handleWrapperClick} style={{ width: '100%', height: '100vh' }}>
           <GlobalStyles />
           <Switch>
             <ProtectedRoute authenticated={isAuthenticated} exact path="/">
-              <Route>
                 <Dash checkins={checkins} days={15}/>
-              </Route>
             </ProtectedRoute>
-            <Route path="/join">
-              <Join signUpWithEmail={signUpWithEmail}/>
-            </Route>
-            <Route path="/login">
-              <Login/>
-            </Route>
+
+            {/* unprotected routes */}
+            <RedirectToSlash authenticated={isAuthenticated} path="/join">
+              <Join signInWithProvider={signInWithProvider} signUpWithEmail={signUpWithEmail} />
+            </RedirectToSlash>
+            <RedirectToSlash authenticated={isAuthenticated} path="/login">
+              <Login signInWithProvider={signInWithProvider} signInEmailUser={signInEmailUser} />
+            </RedirectToSlash>
+
             <ProtectedRoute authenticated={isAuthenticated} path="/profile">
-              <Route >
                 <Profile />
-              </Route>
             </ProtectedRoute>
             <ProtectedRoute authenticated={isAuthenticated} path="/checkin">
-              <Route>
                 <Checkin />
-              </Route>
             </ProtectedRoute>
             {/* <Route path="*">
               <Unknown />
             </Route> */}
-
           </Switch>
         </div>
       </ThemeProvider>

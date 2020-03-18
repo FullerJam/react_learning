@@ -12,7 +12,7 @@ const StyledHeading = styled.h3`
     color: ${({ theme }) => theme.colors.purple};
   `;
 
-    const StyledSocialIconArea = styled.div`
+const StyledSocialIconArea = styled.div`
     display: flex;
     justify-content: space-around;
     min-width:200px;
@@ -25,14 +25,14 @@ const StyledHeading = styled.h3`
  */
 function LoginForm(props) {
 
-    const { buttonText, onSubmit } = props;
+    const { buttonText, onSubmit, serverErrorMessage, onSocialLogin } = props;
     const [displayEmail, setDisplayEmail] = useState(false);
 
     const loginSchema = yup.object().shape({
         email: yup.string().email('Email is not valid').required('Email is required'),
         password: yup.string().required('Password is required').min(8, 'Password must be a minimum of 8 chars')
     });
-    const { register, handleSubmit, errors } = useForm({validationSchema:loginSchema});
+    const { register, handleSubmit, errors } = useForm({ validationSchema: loginSchema });
 
 
     const handleClick = e => {
@@ -40,14 +40,16 @@ function LoginForm(props) {
         setDisplayEmail(!displayEmail);
     }
 
-    const handleInnerSubmit = data => {onSubmit(data)}
+    const handleDataSubmit = data => { onSubmit(data) }
+    const handleSocialClick = provider => {
+        onSocialLogin(provider)
+    }
 
     return (
         <React.Fragment>
             <StyledSocialIconArea>
-                <SocialIcon network="facebook" />
-                <SocialIcon network="google" />
-                <SocialIcon network="twitter" />
+                <SocialIcon onClick={() => handleSocialClick("facebook")} network="facebook" />
+                <SocialIcon onClick={() => handleSocialClick("google")} network="google" />
             </StyledSocialIconArea>
             <StyledHeading> OR </StyledHeading>
 
@@ -55,19 +57,19 @@ function LoginForm(props) {
             {!displayEmail && (<Button text="Email" onClick={handleClick} />)}
 
             {displayEmail && (
-                <form onSubmit={handleSubmit(handleInnerSubmit)}>
+                <form onSubmit={handleSubmit(handleDataSubmit)}>
                     <p>
                         <label> Email </label>
                     </p>
                     <p>
-                        <input type="text" name="email" ref={register}/>
+                        <input type="text" name="email" ref={register} />
                         {errors.email && errors.email.message}
                     </p>
                     <p>
                         <label> Password </label>
                     </p>
                     <p>
-                        <input type="password" name="password" ref={register}/>
+                        <input type="password" name="password" ref={register} />
                         {errors.password && errors.password.message}
                     </p>
                     <Button text={buttonText} />
@@ -83,11 +85,14 @@ function LoginForm(props) {
 
 LoginForm.propTypes = {
     buttonText: PropTypes.string,
-    onSubmit:PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onSocialLogin: PropTypes.func.isRequired,
+    serverErrorMessage: PropTypes.string
 };
 
 LoginForm.defaultProps = {
-    buttonText: "JOIN"
+    buttonText: "JOIN",
+    serverErrorMessage:''
 };
 
 export default LoginForm;
